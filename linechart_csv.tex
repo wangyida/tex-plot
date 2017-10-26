@@ -1,29 +1,33 @@
 \documentclass{article}
 \usepackage[active,tightpage]{preview}
 \usepackage{pgfplots}
-\pgfplotsset{compat=newest}
+\usepgfplotslibrary{colorbrewer}
+\pgfplotsset{compat=newest, cycle list/Set1}
 \PreviewEnvironment{tikzpicture} 
-
-\definecolor{tb_color_1}{RGB}{245,124,0}
-\definecolor{tb_color_2}{RGB}{0,167,247}
-
-\pgfplotscreateplotcyclelist{tb}{
-semithick,tb_color_1\\%
-semithick,tb_color_2\\%
-}
 
 \begin{document}
   \begin{tikzpicture}
-    \begin{axis}[cycle list name=tb, 
+    \begin{axis}[cycle list name=Set1, 
                  grid=both,
                  grid style={solid,gray!30!white},
-                 axis lines=middle,
+                 %axis lines=middle,
+		 axis line style={-},
                  xlabel={step},
+		 xmax=130000,
                  ylabel={value},
-                 x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
-                 y label style={at={(axis description cs:-0.1,.5)},rotate=90,anchor=south},]
-      \addplot table [x=Step, y=Value, col sep=comma] {data.csv};
-      \addplot table [x=Step, y=Value, col sep=comma] {data1.csv};
+		 ymode=log,
+		 log basis y={10},
+		 legend entries={full order, nebula, order 1, order 2, order 3, variational},
+		 legend style={fill=none, legend columns=2, draw=none},
+		 axis background/.style={fill=lightgray!20},
+		 every axis plot/.append style={thick},
+		 ]
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_tvae-1-logs-tag-order-3_metric_learning_cost.csv};
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_tvae0-logs-tag-order-3_metric_learning_cost.csv};
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_tvae1-logs-tag-order-3_metric_learning_cost.csv};
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_tvae2-logs-tag-order-3_metric_learning_cost.csv};
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_tvae3-logs-tag-order-3_metric_learning_cost.csv};
+      \addplot+ table [x=Step, y=Value, col sep=comma] {data/run_result_shapenet_vae-logs-tag-order-3_metric_learning_cost.csv};
     \end{axis}
   \end{tikzpicture}
 \end{document}
